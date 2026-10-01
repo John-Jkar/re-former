@@ -1,0 +1,28 @@
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%# The old HTML and form_tag forms would submit as POST, which would %>
+<%# not match the PATCH that users#update expects. %>
+<%# See bin/rails routes: PATCH /users/:id(.:format) users#update %>
+<%= form_with model: @user do |form| %>
+  <%= form.label :username, "Your user name here" %>
+  <%= form.text_field :username, placeholder: "example_username" %><br><br>
+
+  <%= form.label :email %>
+  <%= form.email_field :email, placeholder: "example@example.com" %><br><br>
+
+  <%= form.label :password %>
+  <%= form.password_field :password, placeholder: "example_password" %><br><br>
+
+  <%= form.submit %>
+<% end %>
+
+<%= link_to "Back to new user form", new_user_path %>

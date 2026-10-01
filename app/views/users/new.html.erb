@@ -1,0 +1,47 @@
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%# Bare metal HTML form from step 1 of the assignment. %>
+<%# It is commented out with an HTML comment rather than ERB comments %>
+<%# because the block itself contains an ERB closing tag, which would %>
+<%# close an ERB comment early and leak markup into the page. %>
+<%# Delete the HTML comment markers to use it. %>
+<%# data-turbo="false" makes the browser send a normal POST request %>
+<%# instead of letting Turbo intercept it and send a TURBO_STREAM request. %>
+<!--
+<form action="/users" accept-charset="UTF-8" method="post" data-turbo="false">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <label for="username">Username</label>
+  <input type="text" name="user[username]" id="username"><br><br>
+  <label for="email">Email</label>
+  <input type="email" name="user[email]" id="email"><br><br>
+  <label for="password">Password</label>
+  <input type="password" name="user[password]" id="password"><br><br>
+  <input type="submit" value="Submit Form">
+</form>
+-->
+
+<%# Railsy form from step 2 of the assignment. %>
+<%# form_with inserts the authenticity token for us, and because @user is %>
+<%# persisted in the edit view it also renders a hidden _method=patch field %>
+<%# so the form reaches users#update with PATCH. %>
+<%= form_with model: @user do |form| %>
+  <%= form.label :username, "Your user name here" %>
+  <%= form.text_field :username, placeholder: "example_username" %><br><br>
+
+  <%= form.label :email %>
+  <%= form.email_field :email, placeholder: "example@example.com" %><br><br>
+
+  <%= form.label :password %>
+  <%= form.password_field :password, placeholder: "example_password" %><br><br>
+
+  <%= form.submit %>
+<% end %>
